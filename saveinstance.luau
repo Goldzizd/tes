@@ -39,7 +39,6 @@ local identify_executor = identifyexecutor or getexecutorname or whatexecutor
 local EXECUTOR_NAME = identify_executor and identify_executor() or ""
 
 -- local cloneref = cloneref
-local gethiddenproperty = gethiddenproperty
 
 -- These should be universal enough
 local appendfile = appendfile
