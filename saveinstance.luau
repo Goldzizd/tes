@@ -38,8 +38,8 @@ local identify_executor = identifyexecutor or getexecutorname or whatexecutor
 
 local EXECUTOR_NAME = identify_executor and identify_executor() or ""
 
--- local cloneref = global_container.cloneref
-local gethiddenproperty = global_container.gethiddenproperty
+-- local cloneref = cloneref
+local gethiddenproperty = gethiddenproperty
 
 -- These should be universal enough
 local appendfile = appendfile
@@ -47,8 +47,8 @@ local isfile = isfile
 local readfile = readfile
 local writefile = writefile
 
-local getscriptbytecode = global_container.getscriptbytecode -- * A lot of assumptions are made based on whether this function is defined or not. So in certain edge cases, like if the executor defines "decompile" or "getscripthash" function yet doesn't define this function there might be loss of functionality of the saveinstance. Although that would be very rare and weird
-local base64encode = global_container.base64encode
+local getscriptbytecode = getscriptbytecode -- * A lot of assumptions are made based on whether this function is defined or not. So in certain edge cases, like if the executor defines "decompile" or "getscripthash" function yet doesn't define this function there might be loss of functionality of the saveinstance. Although that would be very rare and weird
+local base64encode = base64encode
 
 local service = setmetatable({}, {
 	__index = function(self, serviceName)
@@ -2257,7 +2257,7 @@ local function synsaveinstance(CustomOptions, CustomOptions2)
 	end
 	GLOBAL_ENV.USSI = true
 	-- do -- ? Causes issues on SirHurt (Kick lacking Capability "Consequences"), let threads operate on their default/preferred identity set by the developers
-	-- 	local setthreadidentity = global_container.setthreadidentity
+	-- 	local setthreadidentity = setthreadidentity
 	-- 	if setthreadidentity then
 	-- 		pcall(setthreadidentity, 8) -- ? Arceus X Fix
 	-- 	end
@@ -3708,7 +3708,7 @@ local function synsaveinstance(CustomOptions, CustomOptions2)
 		SaveNotCreatableWillBeEnabled = SaveNotCreatable
 			or (IsolateLocalPlayer or IsolateLocalPlayerCharacter) and IsolateLocalPlayer
 			or IsolatePlayers
-			or NilInstances and global_container.getnilinstances -- ! Make sure this accurately reflects everything below
+			or NilInstances and getnilinstances -- ! Make sure this accurately reflects everything below
 
 		save_hierarchy(ToSaveList)
 
@@ -3738,12 +3738,12 @@ local function synsaveinstance(CustomOptions, CustomOptions2)
 			save_extra("Players", service.Players) -- no reason to saveprops as you can see the props on the original instance
 		end
 
-		if NilInstances and global_container.getnilinstances then
+		if NilInstances and getnilinstances then
 			local nil_instances, nil_instances_size = {}, 1
 
 			local NilInstancesFixes = OPTIONS.NilInstancesFixes
 
-			for _, instance in global_container.getnilinstances() do
+			for _, instance in getnilinstances() do
 				if instance == game then
 					instance = nil
 					-- break
@@ -4063,13 +4063,13 @@ local function synsaveinstance(CustomOptions, CustomOptions2)
 			return table.concat(randomarray)
 		end
 
-		if global_container.gethui then
+		if gethui then
 			StatusGui.Name = randomString()
-			StatusGui.Parent = global_container.gethui()
+			StatusGui.Parent = gethui()
 		else
-			if global_container.protectgui then
+			if protectgui then
 				StatusGui.Name = randomString()
-				global_container.protectgui(StatusGui)
+				protectgui(StatusGui)
 				StatusGui.Parent = game:GetService("CoreGui")
 			else
 				local RobloxGui = game:GetService("CoreGui"):FindFirstChild("RobloxGui")
